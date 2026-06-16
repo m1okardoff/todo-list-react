@@ -1,11 +1,15 @@
+@import "tailwindcss";
+
+
 body {
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+  /* font-family: Arial, sans-serif; */
+  /* max-width: 600px; */
+  /* margin: 0 auto; */
+  /* padding: 20px; */
+  @apply p-5 mx-auto my-0 max-w-[600px];
 }
 
-button {
+/* button {
   padding: 8px 12px;
   background-color: #4caf50;
   color: white;
@@ -15,12 +19,12 @@ button {
 
 button:hover {
   background-color: #45a049;
-}
+} */
 
-input {
+/* input {
   padding: 8px;
   flex-grow: 1;
-}
+} */
 
 .counter {
   margin-top: 20px;

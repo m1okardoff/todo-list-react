@@ -3,17 +3,17 @@ function App() {
 
   return (
     <>
-      <h1>Todo List</h1>
+      <h1 className="text-center text-[32px] text-red-300 font-bold">Todo List</h1>
 
-      <div className="controls">
-        <input type="text" id="todo-input" placeholder="Что нужно сделать?" />
-        <button id="add-button">Добавить</button>
-        <button id="sort-button">Сортировать</button>
+      <div className="border-2 border-yellow-400 p-4">
+        <input className="p-2 grow w-100 mb-3" type="text" placeholder="Что нужно сделать?" />
+        <button className="bg-blue-400 px-5 py-2 rounded-3xl me-3">Добавить</button>
+        <button className="bg-pink-300 px-5 py-2 rounded-3xl">Сортировать</button>
       </div>
       <div className="counter">
-        Задач: <span id="todo-count">0</span>
+        Задач: <span>0</span>
       </div>
-      <div id="todo-list" className="todo-container"></div>
+      <div className="todo-container"></div>
     </>
   );
 }
