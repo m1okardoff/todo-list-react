@@ -63,6 +63,28 @@ function App() {
             .catch((error) => console.error("Помилка:", error));
     };
 
+    const handleToggleTodo = (id: string, currentCompleted: boolean) => {
+      fetch(`${URL_API}/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({completed: !currentCompleted}),
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error("Не вдалось змінити статус");
+                return res.json();
+            })
+            .then((data) => {
+                setTodos(todos.map((todo) => {
+                  return todo.id === id ? data : todo
+                }));
+            })
+            .catch((error) =>
+                console.error("Помилка", error),
+            )
+    }
+
     useEffect(() => {
         fetch(URL_API)
             .then((res) => {
@@ -117,8 +139,8 @@ function App() {
                     <ItemTodo
                         item={todo}
                         key={todo.id}
-                        toggleTodo={() => {}}
-                        deleteTodo={() => handleDeleteTodo(todo.id)}
+                        toggleTodo={() => handleToggleTodo(todo.id!, todo.completed)}
+                        deleteTodo={() => handleDeleteTodo(todo.id!)}
                     />
                 ))}
             </div>
