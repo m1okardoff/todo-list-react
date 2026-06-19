@@ -19,7 +19,7 @@ function App() {
   const [isSorted, setIsSorted] = useState<boolean>(false);
 
   const handleAddTodo = () => {
-    const newText = inputRef.current.value;
+    const newText = inputRef.current?.value;
     if (!newText) return;
 
     const newTodo: Todo = {
@@ -44,15 +44,24 @@ function App() {
       })
       .catch((error) => console.error("Помилка додавання нової замітки", error))
       .finally(() => {
-        inputRef.current.value = "";
-        inputRef.current.focus();
+        inputRef.current!.value = "";
+        inputRef.current?.focus();
       });
   };
 
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-    inputRef.current.focus();
-  }, [todos]);
+    fetch(URL_API)
+      .then((res) => {
+        if (!res.ok) throw new Error("Не вдалось завантажити данні");
+        return res.json();
+      })
+      .then((data) => {
+        setTodos(data);
+      })
+      .catch((error) => {
+        console.error("Помилка отримання задачі", error);
+      });
+  }, []);
 
   return (
     <>
