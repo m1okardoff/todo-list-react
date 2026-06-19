@@ -3,23 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 interface Todo {
-  id: string;
+  id?: string;
   text: string;
   completed: boolean;
   createdAt: number;
 }
 
+const URL_API = "http://localhost:3000/todos";
+
 function App() {
   console.log("App компонент відрендерився");
 
-  const [todos, setTodos] = useState<Todo[]>(() => {
-    const storeTodos = localStorage.getItem("todos");
-
-    return storeTodos ? JSON.parse(storeTodos) : [];
-  });
-
+  const [todos, setTodos] = useState<Todo[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-
   const [isSorted, setIsSorted] = useState<boolean>(false);
 
   const handleAddTodo = () => {
@@ -27,15 +23,30 @@ function App() {
     if (!newText) return;
 
     const newTodo: Todo = {
-      id: self.crypto.randomUUID(),
       text: newText,
       completed: false,
       createdAt: Date.now(),
     };
 
-    setTodos([...todos, newTodo]);
-    inputRef.current.value = "";
-    inputRef.current.focus();
+    fetch(URL_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTodo),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Не вдалось створити задачу");
+        return res.json();
+      })
+      .then((data) => {
+        setTodos([...todos, data]);
+      })
+      .catch((error) => console.error("Помилка додавання нової замітки", error))
+      .finally(() => {
+        inputRef.current.value = "";
+        inputRef.current.focus();
+      });
   };
 
   useEffect(() => {
@@ -50,21 +61,14 @@ function App() {
       </h1>
 
       <div className="border-2 border-yellow-400 p-4">
-        {/* <input
-          className="p-2 grow w-100 mb-3"
-          type="text"
-          placeholder="Что нужно сделать?"
-          ref={inputRef}
-        /> */}
-        {/* <button
-          className="bg-blue-400 px-5 py-2 rounded-3xl me-3"
+        <Input type="text" placeholder="Що потрiбно зробити" ref={inputRef} />
+        <Button
+          variant="default"
+          className="bg-red-400"
           onClick={handleAddTodo}
         >
-        
           Добавить
-        </button> */}
-        <Input type="text" placeholder="Що потрiбно зробити" ref={inputRef}/>
-        <Button variant="default" className="bg-red-400">Добавить</Button>
+        </Button>
         <button className="bg-pink-300 px-5 py-2 rounded-3xl">
           Сортировать
         </button>
