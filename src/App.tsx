@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface Todo {
   id: string;
@@ -48,18 +50,21 @@ function App() {
       </h1>
 
       <div className="border-2 border-yellow-400 p-4">
-        <input
+        {/* <input
           className="p-2 grow w-100 mb-3"
           type="text"
           placeholder="Что нужно сделать?"
           ref={inputRef}
-        />
-        <button
+        /> */}
+        {/* <button
           className="bg-blue-400 px-5 py-2 rounded-3xl me-3"
           onClick={handleAddTodo}
         >
+        
           Добавить
-        </button>
+        </button> */}
+        <Input type="text" placeholder="Що потрiбно зробити" ref={inputRef}/>
+        <Button variant="default" className="bg-red-400">Добавить</Button>
         <button className="bg-pink-300 px-5 py-2 rounded-3xl">
           Сортировать
         </button>
