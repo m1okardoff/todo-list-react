@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ItemTodo } from "./components/ItemTodo";
 
-interface Todo {
+export interface Todo {
   id?: string;
   text: string;
   completed: boolean;
@@ -12,8 +13,6 @@ interface Todo {
 const URL_API = "http://localhost:3000/todos";
 
 function App() {
-  console.log("App компонент відрендерився");
-
   const [todos, setTodos] = useState<Todo[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isSorted, setIsSorted] = useState<boolean>(false);
@@ -64,33 +63,42 @@ function App() {
   }, []);
 
   return (
-    <>
-      <h1 className="text-center text-[32px] text-red-300 font-bold">
+    <div className="max-w-[560px] w-full mx-auto my-10 p-6 bg-white border border-zinc-200  rounded-2xl shadow-xs flex flex-col gap-6">
+      <h1 className="text-center text-3xl font-extrabold tracking-tight text-zinc-900">
         Todo List
       </h1>
 
-      <div className="border-2 border-yellow-400 p-4">
-        <Input type="text" placeholder="Що потрiбно зробити" ref={inputRef} />
-        <Button
-          variant="default"
-          className="bg-red-400"
-          onClick={handleAddTodo}
-        >
-          Добавить
-        </Button>
-        <button className="bg-pink-300 px-5 py-2 rounded-3xl">
-          Сортировать
-        </button>
+      <div className="flex flex-col gap-3">
+        <Input type="text" placeholder="Що потрібно зробити?" ref={inputRef} />
+        <div className="flex gap-2">
+          <Button
+            className="flex-1 font-bold"
+            variant="default"
+            onClick={handleAddTodo}
+          >
+            Додати
+          </Button>
+          <Button
+            className="font-semibold"
+            variant={isSorted ? "secondary" : "outline"}
+            onClick={() => setIsSorted(!isSorted)}
+          >
+            {isSorted ? "Скинути сортування" : "Сортувати (А-Я)"}
+          </Button>
+        </div>
       </div>
-      <div className="counter">
-        Задач: <span>0</span>
+
+      <div className="text-sm font-semibold text-zinc-500">
+        Завдань: <span className="text-zinc-950">{todos.length}</span> &middot;
+        Виконано: <span className="text-emerald-600 ">{}</span>
       </div>
-      <div className="todo-container">
+
+      <div className="flex flex-col gap-2.5 max-h-[350px] overflow-y-auto pr-1">
         {todos.map((todo) => (
-          <div key={todo.id}>{todo.text}</div>
+          <ItemTodo item={todo} toggleTodo={() => {}} deleteTodo={() => {}} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 
