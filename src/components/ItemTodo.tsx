@@ -1,9 +1,9 @@
-import type { Todo } from "@/App";
+import type { TodoDTO } from "@/App";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 
 interface ItemTodoProps {
-  item: Todo;
+  item: TodoDTO;
   toggleTodo: () => void;
   deleteTodo: () => void;
 }
